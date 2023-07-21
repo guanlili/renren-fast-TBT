@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.Goods8Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.Goods8Entity" id="goods8Map">
+        <result property="id" column="id"/>
+        <result property="productNum" column="product_num"/>
+        <result property="productName" column="product_name"/>
+        <result property="tradePartnerNum" column="trade_partner_num"/>
+        <result property="tradePartnerName" column="trade_partner_name"/>
+        <result property="tradeMethodNum" column="trade_method_num"/>
+        <result property="tradeMethodName" column="trade_method_name"/>
+        <result property="registrationPlaceNum" column="registration_place_num"/>
+        <result property="registrationPlaceName" column="registration_place_name"/>
+<!--        <result property="firstNum" column="first_num"/>-->
+<!--        <result property="firstNumUnit" column="first_num_unit"/>-->
+<!--        <result property="secondNum" column="second_num"/>-->
+<!--        <result property="secondNumUnit" column="second_num_unit"/>-->
+        <result property="rmbAmount" column="rmb_amount"/>
+        <result property="dataDate" column="data_date"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="createTime" column="create_time"/>
+
+        <result property="fieldName" column="field_name"/>
+        <result property="userName" column="user_name"/>
+
+
+    </resultMap>
+
+    <!-- 查询全部value -->
+    <select id="getAllGoods" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select * from tb_goods8
+    </select>
+
+    <!-- 查询贸易总金额和商品名称 -->
+<!--    <select id="findTotalAmountByProductName" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">-->
+<!--        select sum(rmb_amount) as rmb_amount,product_name from tb_goods8-->
+<!--        JOIN tb_good_and_fields tgaf on tb_goods8.product_num = tgaf.product_num-->
+<!--        where-->
+<!--              (#{fieldName} = '' OR tgaf.field_name = #{fieldName})and-->
+<!--              (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})-->
+<!--          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})-->
+<!--        group by product_name-->
+<!--        order by sum(rmb_amount) desc-->
+<!--    </select>-->
+
+    <select id="findTotalAmountByProductName" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select sum(rmb_amount) as rmb_amount,product_name,product_num from tb_goods8
+        where
+            (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})
+          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})
+          and user_name=#{userName}
+
+        group by product_name
+        order by sum(rmb_amount) desc
+    </select>
+
+
+    <!-- 查询贸易总金额和国家名称 -->
+<!--    <select id="findTotalAmountByNationalName" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">-->
+<!--        select sum(rmb_amount) as rmb_amount,trade_partner_name from tb_goods8-->
+<!--         JOIN tb_good_and_fields tgaf on tb_goods8.product_num = tgaf.product_num-->
+<!--        where (#{fieldName} = '' OR tgaf.field_name = #{fieldName})-->
+<!--          and (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})-->
+<!--          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})-->
+<!--        group by trade_partner_name-->
+<!--        order by sum(rmb_amount) desc-->
+<!--    </select>-->
+
+    <!-- 查询贸易总金额和国家名称 -->
+    <select id="findTotalAmountByNationalName" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select sum(rmb_amount) as rmb_amount,trade_partner_name from tb_goods8
+        where (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})
+          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})
+          and user_name=#{userName}
+
+        group by trade_partner_name
+        order by sum(rmb_amount) desc
+    </select>
+
+
+    <!-- 查询贸易总金额和地区名称 -->
+    <select id="findTotalAmountByAreaName" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select sum(rmb_amount) as rmb_amount,registration_place_name from tb_goods8
+        where  (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})
+          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})
+          and user_name=#{userName}
+
+        group by registration_place_name
+        order by sum(rmb_amount) desc
+    </select>
+
+<!--    <select id="findTotalAmountByProductNameOfNation" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">-->
+<!--        select sum(rmb_amount) as rmb_amount,product_name from tb_goods8-->
+<!--        JOIN tb_good_and_fields tgaf on tb_goods8.product_num = tgaf.product_num-->
+<!--        where  (#{name} = '' OR trade_partner_name = #{name})-->
+<!--          AND (#{fieldName} = '' OR tgaf.field_name = #{fieldName})-->
+<!--          and (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})-->
+<!--          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})-->
+<!--        group by product_name-->
+<!--        order by sum(rmb_amount) desc-->
+<!--    </select>-->
+
+    <select id="findTotalAmountByProductNameOfNation" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select sum(rmb_amount) as rmb_amount,product_name,product_num from tb_goods8
+        where  (#{name} = '' OR trade_partner_name = #{name})
+          and (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})
+          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})
+          and user_name=#{userName}
+
+        group by product_name
+        order by sum(rmb_amount) desc
+    </select>
+<!--    <select id="findTotalAmountByProductNameOfArea" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">-->
+<!--        select sum(rmb_amount) as rmb_amount,product_name from tb_goods8-->
+<!--        JOIN tb_good_and_fields tgaf on tb_goods8.product_num = tgaf.product_num-->
+<!--        where (#{name} = '' OR registration_place_name = #{name})-->
+<!--          and (#{fieldName} = '' OR tgaf.field_name = #{fieldName})-->
+<!--          and (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})-->
+<!--          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})-->
+<!--        group by product_name-->
+<!--        order by sum(rmb_amount) desc-->
+<!--    </select>-->
+
+    <select id="findTotalAmountByProductNameOfArea" parameterType="string" resultType="io.renren.modules.generator.entity.Goods8Entity">
+        select sum(rmb_amount) as rmb_amount,product_name,product_num from tb_goods8
+        where (#{name} = '' OR registration_place_name = #{name})
+          and (#{pickDateStart} = '' OR  data_date &gt;= #{pickDateStart})
+          and (#{pickDateEnd} = '' OR data_date &lt;= #{pickDateEnd})
+          and user_name=#{userName}
+
+        group by product_name
+        order by sum(rmb_amount) desc
+    </select>
+
+    <delete id="deleteAll" >
+        DELETE FROM tb_goods8 WHERE user_name=#{userName}
+    </delete>
+
+
+
+</mapper>

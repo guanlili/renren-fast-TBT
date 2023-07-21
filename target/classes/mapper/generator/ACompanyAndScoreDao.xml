@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.ACompanyAndScoreDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.ACompanyAndScore" id="ACompanyAndScoreMap">
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="indicatorId" column="indicator_id"/>
+        <result property="companyScore" column="company_score"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="year" column="year"/>
+
+
+    </resultMap>
+
+    <select id="getSumCompanyScoreByCompanyAndIndicator" parameterType="integer" resultType="string">
+
+        select sum(company_score) from A_company_and_score join A_Indicator AI on A_company_and_score.indicator_id = AI.id
+        where A_company_and_score.company_id=#{companyId}  and parent_id = #{indicatorId}
+    </select>
+    <select id="getSumCompanyScoreByCompany" parameterType="integer" resultType="string">
+
+        select sum(company_score) from A_Indicator join A_company_and_score Acas on A_Indicator.id = Acas.indicator_id
+        where Indicator_level=1 and Acas.company_id=#{companyId} and Acas.year=#{year}
+    </select>
+
+    <select id="getByCompanyAndIndicator" parameterType="integer" resultType="io.renren.modules.generator.entity.ACompanyAndScore">
+        select *
+        from A_company_and_score where company_id=#{companyId} and indicator_id= #{indicatorId} and year=#{year}
+    </select>
+
+</mapper>

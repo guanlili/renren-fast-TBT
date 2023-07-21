@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.AIndicatorDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.AIndicatorEntity" id="aIndicatorMap">
+        <result property="id" column="id"/>
+        <result property="indicatorName" column="Indicator_name"/>
+        <result property="indicatorLevel" column="Indicator_level"/>
+        <result property="indicatorWeight" column="Indicator_weight"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="parentName" column="parent_name"/>
+        <result property="star" column="star"/>
+        <result property="createTime" column="create_time"/>
+
+
+    </resultMap>
+
+
+    <!-- 查询全部value -->
+    <select id="getAllIndicators" parameterType="string" resultType="io.renren.modules.generator.entity.AIndicatorEntity">
+        select * from A_Indicator
+    </select>
+
+    <!-- 根据父亲id查询全部value -->
+    <select id="getIndicatorsByParentId" parameterType="integer" resultType="io.renren.modules.generator.entity.AIndicatorEntity">
+        select * from A_Indicator where parent_id=#{parentId}
+    </select>
+
+    <!-- 根据id查询全部value -->
+    <select id="getIndicatorsById" parameterType="integer" resultType="io.renren.modules.generator.entity.AIndicatorEntity">
+        select * from A_Indicator where id=#{id}
+    </select>
+
+    <!-- 根据indicatorLevel查询全部value -->
+    <select id="getIndicatorsByIndicatorLevel" parameterType="integer" resultType="io.renren.modules.generator.entity.AIndicatorEntity">
+        select * from A_Indicator where Indicator_level=#{indicatorLevel}
+    </select>
+
+    <!-- 根据id查询兄弟节点全部value -->
+    <select id="getBrothersIndicatorsById" parameterType="integer" resultType="io.renren.modules.generator.entity.AIndicatorEntity">
+        select * from A_Indicator where parent_id=(select parent_id from A_Indicator where id=#{id})
+    </select>
+    <!-- 根据id查询权重之和 -->
+    <select id="getSumIndicatorWeightByParentId" parameterType="integer" resultType="integer">
+        select sum(AI.Indicator_weight) from
+            A_expert_score join A_Indicator AI on A_expert_score.indicator_id = AI.id
+        where AI.parent_id=#{parentId} and year=#{year} and A_expert_score.company_id=#{companyId} and expert_score IS NOT NULL ;
+</select>
+    <!-- 根据id查询权重之和 -->
+    <select id="getSumIndicatorWeightByParentIdNotNull" parameterType="integer" resultType="integer">
+        select sum(AI.Indicator_weight) from
+            A_expert_score join A_Indicator AI on A_expert_score.indicator_id = AI.id
+        where AI.parent_id=#{parentId} and A_expert_score.company_id=#{companyId} and year=#{year};
+    </select>
+
+
+
+</mapper>

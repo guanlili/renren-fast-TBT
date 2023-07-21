@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.AExpertScoreDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.AExpertScoreEntity" id="aExpertScoreMap">
+        <result property="id" column="id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="companyName" column="company_name"/>
+        <result property="indicatorId" column="indicator_id"/>
+        <result property="indicatorName" column="indicator_name"/>
+        <result property="selfScore" column="self_score"/>
+        <result property="expertScore" column="expert_score"/>
+        <result property="scoreConversion" column="score_conversion"/>
+        <result property="scoreSystem" column="score_system"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="companyScore" column="company_score"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="year" column="year"/>
+
+
+    </resultMap>
+
+    <!-- 根据companyName和indicatorId查询全部value -->
+    <select id="getCompanyScoreByCompanyNameAndIndicator" parameterType="string" resultType="io.renren.modules.generator.entity.AExpertScoreEntity">
+        select * from A_expert_score
+        where company_name=#{companyName} and indicator_id=#{indicatorId} and year=#{year}
+
+    </select>
+
+
+    <!-- 根据companyName和indicatorId查询全部value -->
+    <select id="getCompanyScoreByCompanyNameAndIndicator1" parameterType="string" resultType="io.renren.modules.generator.entity.AExpertScoreEntity">
+        select * from A_expert_score
+        where company_id=#{companyId} and indicator_id=#{indicatorId}
+
+    </select>
+    <!-- 根据companyName和indicatorId查询全部value -->
+    <select id="getCompanyScoreListByCompanyId" parameterType="integer" resultType="io.renren.modules.generator.entity.AExpertScoreEntity">
+        select * from A_expert_score where company_id=#{companyId}
+
+    </select>
+
+    <!-- 根据companyName和indicatorId查询全部value -->
+    <select id="getSumCompanyScoreListByCompanyNameAndIndicator" parameterType="string" resultType="string">
+        select sum(AE.company_score) from A_expert_score AE join A_Indicator AI on AE.indicator_id = AI.id
+        where AE.company_name=#{companyName}  and AI.parent_id=#{indicatorId} and AE.year=#{year}
+
+    </select>
+    <update id="updateExpertScoreById">
+        UPDATE A_expert_score SET expert_score=#{expertScore}, company_id=#{companyId}, company_name=#{companyName}, indicator_id=#{indicatorId}, indicator_name=#{indicatorName}, self_score=#{selfScore}, score_conversion=#{scoreConversion}, score_system=#{scoreSystem}, remark=#{remark}, update_time=#{updateTime} WHERE id=#{id}
+    </update>
+
+    <update id="updateCompanyScoreById">
+        UPDATE A_expert_score SET company_score=#{companyScore},update_time=#{updateTime} WHERE id=#{id}
+    </update>
+
+    <select id="getCompanyScoreListByYear" parameterType="integer" resultType="io.renren.modules.generator.entity.AExpertScoreEntity">
+        select * from A_expert_score where year=#{year}
+
+    </select>
+
+    <select id="getCompanyScoreListByYearAndIndicatorId" parameterType="integer" resultType="io.renren.modules.generator.entity.AExpertScoreEntity">
+        select *
+        from A_expert_score where indicator_id=#{indicatorId} and year =#{year};
+    </select>
+
+</mapper>

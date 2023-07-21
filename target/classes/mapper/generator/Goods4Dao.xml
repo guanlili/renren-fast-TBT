@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.Goods4Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.Goods4Entity" id="goods4Map">
+        <result property="id" column="id"/>
+        <result property="productNum" column="product_num"/>
+        <result property="productName" column="product_name"/>
+        <result property="tradePartnerNum" column="trade_partner_num"/>
+        <result property="tradePartnerName" column="trade_partner_name"/>
+        <result property="tradeMethodNum" column="trade_method_num"/>
+        <result property="tradeMethodName" column="trade_method_name"/>
+        <result property="registrationPlaceNum" column="registration_place_num"/>
+        <result property="registrationPlaceName" column="registration_place_name"/>
+<!--        <result property="firstNum" column="first_num"/>-->
+<!--        <result property="firstNumUnit" column="first_num_unit"/>-->
+<!--        <result property="secondNum" column="second_num"/>-->
+<!--        <result property="secondNumUnit" column="second_num_unit"/>-->
+        <result property="rmbAmount" column="rmb_amount"/>
+        <result property="dataDate" column="data_date"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="userName" column="user_name"/>
+
+    </resultMap>
+
+    <delete id="deleteAll" >
+        DELETE FROM tb_goods4 WHERE user_name=#{userName}
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.generator.dao.AAverageScoreDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.generator.entity.AAverageScore" id="AAverageScoreMap">
+        <result property="id" column="id"/>
+        <result property="indicatorId" column="indicator_id"/>
+        <result property="indicatorLevel" column="indicator_level"/>
+        <result property="showScore" column="show_score"/>
+        <result property="averageScore" column="average_score"/>
+        <result property="year" column="year"/>
+        <result property="companyType" column="company_type"/>
+
+
+
+
+    </resultMap>
+
+    <select id="getSumScoreByIndicatorId" parameterType="integer" resultType="string">
+        select sum(average_score) from A_average_score join A_Indicator AI on A_average_score.indicator_id = AI.id
+        where parent_id =#{indicatorId} and year=#{year};
+    </select>
+
+    <select id="getScoreByIndicatorId" parameterType="integer" resultType="io.renren.modules.generator.entity.AAverageScore">
+        select * from A_average_score
+        where indicator_id =#{indicatorId} and year=#{year};
+    </select>
+
+</mapper>
